@@ -106,20 +106,26 @@ class Paper:
 ## 运行方式
 
 ```bash
-# 安装依赖
-pip install -r requirements.txt
+# 安装依赖（自动创建 .venv 并同步锁文件）
+uv sync
 
 # 运行 pipeline（需要 .env 中配置 GEMINI_API_KEY）
-python src/main.py
+uv run python src/main.py
 
 # 查看可视化结果
 # 浏览器打开 output/html/YYYY-MM-DD/index.html
+
+# 添加新依赖
+uv add <package-name>
+
+# 更新锁文件
+uv lock
 ```
 
 ## 已知问题 / 注意事项
 
 1. **邮件发送已禁用**：`src/main.py` 中邮件步骤用三引号注释掉了（`'''...'''`）
-2. **CI Python 版本不一致**：pyproject.toml 要求 ≥3.13，GitHub Actions 用 3.11
+2. **CI 使用 uv**：GitHub Actions 通过 `astral-sh/setup-uv@v5` 安装 uv，用 `uv sync` + `uv run` 执行
 3. **并发上限硬编码**：Semaphore(3) 写死在代码中，需改代码才能调整
 4. **周末自动回退**：周六/周日运行时自动查询上周五的论文（HF 周末无新论文）
 
@@ -129,6 +135,6 @@ python src/main.py
 1. 在 `src/main.py` 的 `run()` 中按顺序插入调用
 2. 如果涉及网络请求，考虑代理兼容性（参考 fetcher 的降级模式）
 3. 如果涉及并发，使用 `asyncio.Semaphore` 控制
-4. 新增依赖要同时更新 `requirements.txt` 和 `pyproject.toml`
+4. 新增依赖用 `uv add <package>`，会自动更新 `pyproject.toml` 和 `uv.lock`
 5. 模板文件放 `templates/`，通过 Jinja2 `FileSystemLoader` 加载
 6. 输出文件放 `output/` 子目录，按日期组织

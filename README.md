@@ -16,14 +16,15 @@
 ### 1. 环境要求
 
 - Python >= 3.13
+- [uv](https://docs.astral.sh/uv/) — 推荐的 Python 包管理器
 - [Google Gemini API Key](https://aistudio.google.com/apikey)
 
 ### 2. 安装
 
 ```bash
-git clone https://github.com/your-username/papers-vibe-reading.git
+git clone https://github.com/ottolu/papers-vibe-reading.git
 cd papers-vibe-reading
-pip install -r requirements.txt
+uv sync
 ```
 
 ### 3. 配置
@@ -63,7 +64,7 @@ OUTPUT_DIR=output
 ### 4. 运行
 
 ```bash
-python src/main.py
+uv run python src/main.py
 ```
 
 运行完成后，用浏览器打开可视化页面：
@@ -154,6 +155,7 @@ templates/
 
 | 技术 | 用途 |
 |------|------|
+| [uv](https://docs.astral.sh/uv/) | Python 包管理 + 虚拟环境 + 锁文件 |
 | Python 3.13+ | 运行时，async/await 异步编排 |
 | [Gemini API](https://ai.google.dev/) | 论文深度分析（支持 PDF 原生理解） |
 | [httpx](https://www.python-httpx.org/) | 异步 HTTP 客户端 |
