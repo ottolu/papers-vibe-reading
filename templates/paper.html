@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ paper.title }} — Vibe Reading</title>
+  <!-- KaTeX CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css"
+        integrity="sha384-zh0CIslj3dQfAA6Gx41qB/nFVqhMiWNFjCJ1MmWmCo1XQYAX4RKTsYmF5kZJVwG"
+        crossorigin="anonymous" />
+  <style>
+    /* Reset & base */
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background-color: #f4f5f7;
+      color: #1a1a1a;
+      line-height: 1.75;
+      font-size: 15px;
+    }
+    a { color: #4a90d9; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Top navigation bar */
+    .navbar {
+      background: #ffffff;
+      border-bottom: 1px solid #e8e8e8;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+    .navbar a {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .navbar .nav-date {
+      font-size: 13px;
+      color: #888;
+    }
+
+    /* Container */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 20px 48px;
+    }
+
+    /* Paper metadata card */
+    .meta-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+    .meta-card h1 {
+      margin: 0 0 12px;
+      font-size: 22px;
+      color: #111;
+      line-height: 1.4;
+    }
+    .meta-authors {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+    .meta-links {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 13px;
+    }
+    .badge-upvotes {
+      display: inline-block;
+      background: #fff3e0;
+      color: #e65100;
+      font-weight: 600;
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 9999px;
+    }
+    .meta-links a {
+      padding: 4px 12px;
+      border-radius: 6px;
+      background: #f0f4fa;
+      color: #4a90d9;
+      font-weight: 500;
+      transition: background 0.15s;
+    }
+    .meta-links a:hover {
+      background: #dce6f5;
+      text-decoration: none;
+    }
+
+    /* Analysis content card */
+    .analysis-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 32px 36px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+    .analysis-card h2 {
+      font-size: 18px;
+      margin: 28px 0 12px;
+      color: #222;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+    .analysis-card h2:first-child {
+      margin-top: 0;
+    }
+    .analysis-card h3 {
+      font-size: 16px;
+      margin: 22px 0 8px;
+      color: #333;
+    }
+    .analysis-card h4 {
+      font-size: 15px;
+      margin: 18px 0 6px;
+      color: #444;
+    }
+    .analysis-card p {
+      margin: 0 0 14px;
+      color: #333;
+    }
+    .analysis-card ul, .analysis-card ol {
+      margin: 0 0 14px;
+      padding-left: 24px;
+      color: #333;
+    }
+    .analysis-card li {
+      margin-bottom: 6px;
+    }
+    .analysis-card blockquote {
+      margin: 14px 0;
+      padding: 12px 18px;
+      background: #f8f9fb;
+      border-left: 4px solid #4a90d9;
+      color: #555;
+      border-radius: 0 8px 8px 0;
+    }
+    .analysis-card blockquote p {
+      margin: 0;
+    }
+    .analysis-card pre {
+      background: #f6f8fa;
+      border-radius: 8px;
+      padding: 16px;
+      overflow-x: auto;
+      font-size: 13px;
+      line-height: 1.5;
+      margin: 14px 0;
+    }
+    .analysis-card code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.9em;
+      background: #f0f2f5;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+    .analysis-card pre code {
+      background: none;
+      padding: 0;
+    }
+    .analysis-card table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 14px;
+    }
+    .analysis-card th, .analysis-card td {
+      border: 1px solid #e0e0e0;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .analysis-card th {
+      background: #f6f8fa;
+      font-weight: 600;
+      color: #333;
+    }
+    .analysis-card tr:nth-child(even) {
+      background: #fafbfc;
+    }
+    .analysis-card img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+    .analysis-card hr {
+      border: none;
+      border-top: 1px solid #e8e8e8;
+      margin: 24px 0;
+    }
+
+    /* KaTeX overrides */
+    .katex-display {
+      margin: 18px 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #999;
+      padding: 16px 0 32px;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .container { padding: 16px 12px 32px; }
+      .meta-card { padding: 20px 18px; }
+      .meta-card h1 { font-size: 18px; }
+      .analysis-card { padding: 20px 18px; }
+      .navbar { padding: 10px 14px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top navigation -->
+  <nav class="navbar">
+    <a href="index.html">← 返回当日总览</a>
+    <span class="nav-date">{{ date }}</span>
+  </nav>
+
+  <div class="container">
+    <!-- Paper metadata card -->
+    <div class="meta-card">
+      <h1>{{ paper.title }}</h1>
+      {% if paper.authors %}
+      <div class="meta-authors">{{ paper.authors | join(", ") }}</div>
+      {% endif %}
+      <div class="meta-links">
+        <span class="badge-upvotes">👍 {{ paper.upvotes }}</span>
+        <a href="{{ paper.hf_url }}" target="_blank">🤗 HuggingFace</a>
+        <a href="{{ paper.arxiv_url }}" target="_blank">📄 arXiv</a>
+        <a href="{{ paper.pdf_url }}" target="_blank">📥 PDF</a>
+      </div>
+    </div>
+
+    <!-- Vibe Reading analysis -->
+    <div class="analysis-card">
+      {{ analysis_html | safe }}
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      由 <a href="https://huggingface.co/papers" target="_blank">HF Daily Papers Vibe Reading</a> 自动生成 · {{ generated_at }}
+    </div>
+  </div>
+
+  <!-- KaTeX JS -->
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"
+          integrity="sha384-gLsNsBz/kTF7J1TIRb5O2LAtjwbJXaAzLfY12seNY67Bx4VE8sFO7EXYZB24wKS"
+          crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+          integrity="sha384-+VBxd8XP2ywDSl/On5EPBiYecFclmPRBc26OGBngFJHDHbssMKw9cUVGFN2UiAdZ"
+          crossorigin="anonymous"
+          onload="renderMathInElement(document.body, {
+            delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\\\(', right: '\\\\)', display: false},
+              {left: '\\\\[', right: '\\\\]', display: true}
+            ],
+            throwOnError: false
+          });"></script>
+</body>
+</html>

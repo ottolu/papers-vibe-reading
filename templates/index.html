@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>📰 AI 论文日报 | {{ date }}</title>
+  <style>
+    /* Reset & base */
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background-color: #f4f5f7;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+    a { color: #4a90d9; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Container */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 20px 48px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 40px 0 28px;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #111;
+    }
+    .header .subtitle {
+      font-size: 15px;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    /* Paper card */
+    .paper-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      transition: box-shadow 0.2s, transform 0.15s;
+      cursor: pointer;
+      display: block;
+      color: inherit;
+    }
+    .paper-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      transform: translateY(-1px);
+      text-decoration: none;
+    }
+    .paper-card h2 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      color: #111;
+      line-height: 1.4;
+    }
+    .paper-meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 12px;
+    }
+    .badge-upvotes {
+      display: inline-block;
+      background: #fff3e0;
+      color: #e65100;
+      font-weight: 600;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 9999px;
+    }
+    .paper-snippet {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+    .paper-card .read-more {
+      font-size: 13px;
+      font-weight: 600;
+      color: #4a90d9;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #999;
+      padding: 24px 0 32px;
+    }
+    .footer a {
+      color: #4a90d9;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .container { padding: 16px 12px 32px; }
+      .header h1 { font-size: 22px; }
+      .paper-card { padding: 18px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>📰 AI 论文日报</h1>
+      <div class="subtitle">{{ date }} · 共 {{ papers | length }} 篇精选</div>
+    </div>
+
+    <!-- Paper Cards -->
+    {% for paper in papers %}
+    <a class="paper-card" href="{{ paper.arxiv_id }}.html">
+      <h2>{{ loop.index }}. {{ paper.title }}</h2>
+      <div class="paper-meta">
+        <span class="badge-upvotes">👍 {{ paper.upvotes }}</span>
+        <span>{{ paper.authors[:3] | join(", ") }}{% if paper.authors | length > 3 %} 等{% endif %}</span>
+      </div>
+      <div class="paper-snippet">{{ paper.snippet }}</div>
+      <span class="read-more">查看详情 →</span>
+    </a>
+    {% endfor %}
+
+    <!-- Footer -->
+    <div class="footer">
+      由 <a href="https://huggingface.co/papers" target="_blank">HF Daily Papers Vibe Reading</a> 自动生成 · {{ generated_at }}
+    </div>
+  </div>
+</body>
+</html>
