@@ -122,6 +122,23 @@ uv add <package-name>
 uv lock
 ```
 
+## 当前进度（2025-02-08）
+
+### 已完成
+- 完整 pipeline：fetch → download PDF → Gemini 分析 → Markdown/HTML 报告 → 可视化网页
+- 可视化系统：`src/visualizer.py` + `templates/paper.html` + `templates/index.html`（KaTeX 公式渲染）
+- 项目管理迁移到 uv（删除 requirements.txt，依赖统一在 pyproject.toml）
+- GitHub Actions CI 使用 uv（`astral-sh/setup-uv@v5`）
+- 仓库已推送：https://github.com/ottolu/papers-vibe-reading
+
+### 待修复的 Bug
+- **`src/analyzer.py` 第 205 行 prompt 覆盖 bug**：第 200-203 行构建了含论文标题和摘要的 `user_text`，但第 205 行 `user_text = VIBE_READING_PROMPT` 直接覆盖了前面的拼接，导致标题/摘要信息丢失。应删除第 205 行。
+
+### 待做 / 可优化
+- 邮件发送功能待启用（`src/main.py` 中用三引号注释掉了）
+- 并发上限 Semaphore(3) 硬编码，可考虑移到 config
+- 可视化页面暂无"上一篇/下一篇"导航
+
 ## 已知问题 / 注意事项
 
 1. **邮件发送已禁用**：`src/main.py` 中邮件步骤用三引号注释掉了（`'''...'''`）
@@ -138,3 +155,5 @@ uv lock
 4. 新增依赖用 `uv add <package>`，会自动更新 `pyproject.toml` 和 `uv.lock`
 5. 模板文件放 `templates/`，通过 Jinja2 `FileSystemLoader` 加载
 6. 输出文件放 `output/` 子目录，按日期组织
+7. 改完代码后推送：`git push`（remote 已配置为 origin → github.com/ottolu/papers-vibe-reading）
+8. 推送含 `.github/workflows/` 的修改需要 gh auth 有 `workflow` scope
