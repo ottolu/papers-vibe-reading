@@ -21,7 +21,7 @@
 
     /* Container */
     .container {
-      max-width: 900px;
+      max-width: 960px;
       margin: 0 auto;
       padding: 24px 20px 48px;
     }
@@ -41,6 +41,112 @@
       color: #666;
       margin-top: 8px;
     }
+    .header .nav-links {
+      margin-top: 12px;
+      font-size: 14px;
+    }
+    .header .nav-links a {
+      margin: 0 8px;
+    }
+    .nav-disabled {
+      color: #ccc;
+      margin: 0 8px;
+    }
+
+    /* Stats panel */
+    .stats-panel {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+    .stats-summary {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .stat-item {
+      flex: 1;
+      min-width: 100px;
+      text-align: center;
+      padding: 12px;
+      background: #f8f9fb;
+      border-radius: 10px;
+    }
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a73e8;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: #888;
+      margin-top: 4px;
+    }
+    .charts-row {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .chart-box {
+      flex: 1;
+      min-width: 250px;
+      max-height: 260px;
+      position: relative;
+    }
+    .chart-box canvas {
+      max-height: 240px;
+    }
+
+    /* Filter & sort bar */
+    .filter-bar {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+    .filter-bar label {
+      font-size: 13px;
+      color: #888;
+      font-weight: 600;
+    }
+    .tag-filter {
+      display: inline-block;
+      background: #f0f4fa;
+      color: #555;
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      border: 1px solid transparent;
+      user-select: none;
+    }
+    .tag-filter:hover {
+      background: #dce6f5;
+    }
+    .tag-filter.active {
+      background: #4a90d9;
+      color: #fff;
+      border-color: #3b7cc5;
+    }
+    .sort-select {
+      margin-left: auto;
+      font-size: 13px;
+      padding: 5px 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #fff;
+      color: #555;
+      cursor: pointer;
+    }
 
     /* Paper card */
     .paper-card {
@@ -59,6 +165,9 @@
       transform: translateY(-1px);
       text-decoration: none;
     }
+    .paper-card.hidden {
+      display: none;
+    }
     .paper-card h2 {
       margin: 0 0 8px;
       font-size: 17px;
@@ -72,7 +181,7 @@
       gap: 8px;
       font-size: 13px;
       color: #888;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .badge-upvotes {
       display: inline-block;
@@ -83,16 +192,88 @@
       padding: 2px 8px;
       border-radius: 9999px;
     }
+    .paper-one-line {
+      font-size: 14px;
+      color: #333;
+      line-height: 1.6;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
     .paper-snippet {
       font-size: 14px;
       color: #555;
       line-height: 1.6;
       margin-bottom: 10px;
     }
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+    .card-tag {
+      display: inline-block;
+      background: #e8f0fe;
+      color: #1a73e8;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 9999px;
+    }
+    .card-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .card-ratings {
+      display: flex;
+      gap: 12px;
+      font-size: 12px;
+      color: #888;
+    }
+    .card-ratings span {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .mini-bar {
+      display: inline-flex;
+      gap: 2px;
+    }
+    .mini-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #e0e0e0;
+    }
+    .mini-dot.filled { background: #4a90d9; }
+    .card-metric {
+      font-size: 12px;
+      color: #1a73e8;
+      font-weight: 600;
+      background: #e8f0fe;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
     .paper-card .read-more {
       font-size: 13px;
       font-weight: 600;
       color: #4a90d9;
+    }
+
+    /* Date navigation */
+    .date-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      font-size: 14px;
+    }
+    .date-nav a {
+      padding: 6px 14px;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     }
 
     /* Footer */
@@ -111,6 +292,12 @@
       .container { padding: 16px 12px 32px; }
       .header h1 { font-size: 22px; }
       .paper-card { padding: 18px 16px; }
+      .stats-summary { gap: 8px; }
+      .stat-item { min-width: 70px; padding: 8px; }
+      .stat-value { font-size: 18px; }
+      .charts-row { flex-direction: column; }
+      .filter-bar { flex-direction: column; align-items: stretch; }
+      .sort-select { margin-left: 0; }
     }
   </style>
 </head>
@@ -120,25 +307,260 @@
     <div class="header">
       <h1>📰 AI 论文日报</h1>
       <div class="subtitle">{{ date }} · 共 {{ papers | length }} 篇精选</div>
+      <div class="nav-links">
+        {% if prev_date %}
+        <a href="../{{ prev_date }}/index.html">← {{ prev_date }}</a>
+        {% else %}
+        <span class="nav-disabled">← 无更早日期</span>
+        {% endif %}
+        <a href="../summary.html">浏览所有日期</a>
+        {% if next_date %}
+        <a href="../{{ next_date }}/index.html">{{ next_date }} →</a>
+        {% else %}
+        <span class="nav-disabled">无更新日期 →</span>
+        {% endif %}
+      </div>
     </div>
 
+    <!-- Stats Panel -->
+    {% if stats %}
+    <div class="stats-panel">
+      <div class="stats-summary">
+        <div class="stat-item">
+          <div class="stat-value">{{ stats.total }}</div>
+          <div class="stat-label">论文数</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">{{ stats.avg_upvotes }}</div>
+          <div class="stat-label">平均 Upvotes</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">{{ stats.avg_difficulty }}</div>
+          <div class="stat-label">平均难度</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">{{ stats.avg_novelty }}</div>
+          <div class="stat-label">平均创新性</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">{{ stats.avg_practicality }}</div>
+          <div class="stat-label">平均实用性</div>
+        </div>
+      </div>
+      {% if stats.topic_counts %}
+      <div class="charts-row">
+        <div class="chart-box">
+          <canvas id="topicChart"></canvas>
+        </div>
+        <div class="chart-box">
+          <canvas id="ratingChart"></canvas>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Filter & Sort Bar -->
+    {% if all_tags %}
+    <div class="filter-bar">
+      <label>标签筛选：</label>
+      <span class="tag-filter active" data-tag="all" onclick="filterByTag('all')">全部</span>
+      {% for tag in all_tags %}
+      <span class="tag-filter" data-tag="{{ tag }}" onclick="filterByTag('{{ tag }}')">{{ tag }}</span>
+      {% endfor %}
+      <select class="sort-select" onchange="sortPapers(this.value)">
+        <option value="default">默认排序</option>
+        <option value="upvotes">按 Upvotes</option>
+        <option value="difficulty">按难度</option>
+        <option value="novelty">按创新性</option>
+      </select>
+    </div>
+    {% endif %}
+
     <!-- Paper Cards -->
+    <div id="paper-list">
     {% for paper in papers %}
-    <a class="paper-card" href="{{ paper.arxiv_id }}.html">
+    <a class="paper-card" href="{{ paper.arxiv_id }}.html"
+       data-tags="{{ paper.metadata.tags | join(',') if paper.metadata and paper.metadata.tags else '' }}"
+       data-upvotes="{{ paper.upvotes }}"
+       data-difficulty="{{ paper.metadata.difficulty if paper.metadata else 3 }}"
+       data-novelty="{{ paper.metadata.novelty if paper.metadata else 3 }}">
       <h2>{{ loop.index }}. {{ paper.title }}</h2>
       <div class="paper-meta">
         <span class="badge-upvotes">👍 {{ paper.upvotes }}</span>
         <span>{{ paper.authors[:3] | join(", ") }}{% if paper.authors | length > 3 %} 等{% endif %}</span>
       </div>
+
+      {% if paper.metadata and paper.metadata.one_line_summary %}
+      <div class="paper-one-line">{{ paper.metadata.one_line_summary }}</div>
+      {% else %}
       <div class="paper-snippet">{{ paper.snippet }}</div>
+      {% endif %}
+
+      {% if paper.metadata and paper.metadata.tags %}
+      <div class="card-tags">
+        {% for tag in paper.metadata.tags %}
+        <span class="card-tag">{{ tag }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="card-bottom">
+        <div class="card-ratings">
+          {% if paper.metadata %}
+          <span>难度
+            <span class="mini-bar">
+              {% for i in range(1, 6) %}
+              <span class="mini-dot {% if i <= paper.metadata.difficulty %}filled{% endif %}"></span>
+              {% endfor %}
+            </span>
+          </span>
+          <span>创新
+            <span class="mini-bar">
+              {% for i in range(1, 6) %}
+              <span class="mini-dot {% if i <= paper.metadata.novelty %}filled{% endif %}"></span>
+              {% endfor %}
+            </span>
+          </span>
+          <span>实用
+            <span class="mini-bar">
+              {% for i in range(1, 6) %}
+              <span class="mini-dot {% if i <= paper.metadata.practicality %}filled{% endif %}"></span>
+              {% endfor %}
+            </span>
+          </span>
+          {% endif %}
+        </div>
+        {% if paper.metadata and paper.metadata.key_metrics %}
+        <span class="card-metric">{{ paper.metadata.key_metrics[0].name }}: {{ paper.metadata.key_metrics[0].value }}</span>
+        {% endif %}
+      </div>
+
       <span class="read-more">查看详情 →</span>
     </a>
     {% endfor %}
+    </div>
+
+    <!-- Date Navigation -->
+    <div class="date-nav">
+      {% if prev_date %}
+      <a href="../{{ prev_date }}/index.html">← {{ prev_date }}</a>
+      {% else %}
+      <span></span>
+      {% endif %}
+      {% if next_date %}
+      <a href="../{{ next_date }}/index.html">{{ next_date }} →</a>
+      {% else %}
+      <span></span>
+      {% endif %}
+    </div>
 
     <!-- Footer -->
     <div class="footer">
       由 <a href="https://huggingface.co/papers" target="_blank">HF Daily Papers Vibe Reading</a> 自动生成 · {{ generated_at }}
     </div>
   </div>
+
+  <!-- Chart.js CDN -->
+  {% if stats and stats.topic_counts %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+  <script>
+    // Topic distribution pie chart
+    const topicLabels = {{ topic_labels_json | safe }};
+    const topicValues = {{ topic_values_json | safe }};
+
+    if (topicLabels.length > 0) {
+      const colors = [
+        '#4a90d9', '#34a853', '#fbbc04', '#ea4335', '#9c27b0',
+        '#ff9800', '#00bcd4', '#795548', '#607d8b', '#e91e63',
+        '#3f51b5', '#009688', '#cddc39', '#ff5722', '#8bc34a'
+      ];
+      new Chart(document.getElementById('topicChart'), {
+        type: 'doughnut',
+        data: {
+          labels: topicLabels,
+          datasets: [{
+            data: topicValues,
+            backgroundColor: colors.slice(0, topicLabels.length),
+            borderWidth: 2,
+            borderColor: '#fff'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'right', labels: { font: { size: 11 }, boxWidth: 12 } },
+            title: { display: true, text: '主题分布', font: { size: 14 } }
+          }
+        }
+      });
+    }
+
+    // Rating bar chart
+    new Chart(document.getElementById('ratingChart'), {
+      type: 'bar',
+      data: {
+        labels: ['难度', '创新性', '实用性'],
+        datasets: [{
+          label: '平均评分',
+          data: [{{ stats.avg_difficulty }}, {{ stats.avg_novelty }}, {{ stats.avg_practicality }}],
+          backgroundColor: ['#fbbc04', '#34a853', '#4a90d9'],
+          borderRadius: 6,
+          maxBarThickness: 40
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true, max: 5, ticks: { stepSize: 1 } }
+        },
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: '平均评分', font: { size: 14 } }
+        }
+      }
+    });
+  </script>
+  {% endif %}
+
+  <!-- Filter & Sort JS -->
+  <script>
+    function filterByTag(tag) {
+      const cards = document.querySelectorAll('.paper-card');
+      const filters = document.querySelectorAll('.tag-filter');
+
+      filters.forEach(f => f.classList.remove('active'));
+      document.querySelector('[data-tag="' + tag + '"]').classList.add('active');
+
+      cards.forEach(card => {
+        if (tag === 'all') {
+          card.classList.remove('hidden');
+        } else {
+          const tags = (card.getAttribute('data-tags') || '').split(',');
+          card.classList.toggle('hidden', !tags.includes(tag));
+        }
+      });
+    }
+
+    function sortPapers(criteria) {
+      const list = document.getElementById('paper-list');
+      const cards = Array.from(list.querySelectorAll('.paper-card'));
+
+      cards.sort((a, b) => {
+        if (criteria === 'upvotes') {
+          return parseInt(b.dataset.upvotes) - parseInt(a.dataset.upvotes);
+        } else if (criteria === 'difficulty') {
+          return parseInt(b.dataset.difficulty) - parseInt(a.dataset.difficulty);
+        } else if (criteria === 'novelty') {
+          return parseInt(b.dataset.novelty) - parseInt(a.dataset.novelty);
+        }
+        return 0; // default order
+      });
+
+      cards.forEach(card => list.appendChild(card));
+    }
+  </script>
 </body>
 </html>

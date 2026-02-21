@@ -41,16 +41,89 @@
       font-size: 14px;
       font-weight: 500;
     }
-    .navbar .nav-date {
+    .navbar .nav-center {
       font-size: 13px;
       color: #888;
     }
+    .nav-left, .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 120px;
+    }
+    .nav-right {
+      justify-content: flex-end;
+    }
+    .nav-prev, .nav-next {
+      font-size: 13px;
+      color: #4a90d9;
+      white-space: nowrap;
+    }
+    .nav-disabled {
+      color: #ccc;
+      pointer-events: none;
+    }
 
-    /* Container */
-    .container {
-      max-width: 900px;
+    /* Layout: sidebar + content */
+    .page-layout {
+      display: flex;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 32px 20px 48px;
+      padding: 24px 20px 48px;
+      gap: 28px;
+    }
+
+    /* TOC sidebar */
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+    }
+    .toc-sticky {
+      position: sticky;
+      top: 72px;
+      max-height: calc(100vh - 90px);
+      overflow-y: auto;
+    }
+    .toc-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 18px 20px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+    .toc-card h3 {
+      margin: 0 0 12px;
+      font-size: 13px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .toc-card ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .toc-card li {
+      margin-bottom: 6px;
+    }
+    .toc-card a {
+      font-size: 13px;
+      color: #555;
+      display: block;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .toc-card a:hover, .toc-card a.active {
+      background: #f0f4fa;
+      color: #4a90d9;
+      text-decoration: none;
+    }
+
+    /* Main content area */
+    .content-area {
+      flex: 1;
+      min-width: 0;
+      max-width: 900px;
     }
 
     /* Paper metadata card */
@@ -58,7 +131,7 @@
       background: #ffffff;
       border-radius: 12px;
       padding: 28px 32px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
     }
     .meta-card h1 {
@@ -66,6 +139,15 @@
       font-size: 22px;
       color: #111;
       line-height: 1.4;
+    }
+    .one-line-summary {
+      font-size: 15px;
+      color: #555;
+      margin-bottom: 14px;
+      padding: 10px 14px;
+      background: #f8f9fb;
+      border-left: 3px solid #4a90d9;
+      border-radius: 0 8px 8px 0;
     }
     .meta-authors {
       font-size: 13px;
@@ -79,6 +161,7 @@
       flex-wrap: wrap;
       gap: 10px;
       font-size: 13px;
+      margin-bottom: 14px;
     }
     .badge-upvotes {
       display: inline-block;
@@ -100,6 +183,159 @@
     .meta-links a:hover {
       background: #dce6f5;
       text-decoration: none;
+    }
+
+    /* Tags pills */
+    .tag-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .tag-pill {
+      display: inline-block;
+      background: #e8f0fe;
+      color: #1a73e8;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 9999px;
+    }
+
+    /* Rating bars */
+    .ratings-row {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .rating-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #555;
+    }
+    .rating-label {
+      min-width: 50px;
+    }
+    .rating-bar {
+      display: flex;
+      gap: 3px;
+    }
+    .rating-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #e0e0e0;
+    }
+    .rating-dot.filled {
+      background: #4a90d9;
+    }
+    .rating-dot.filled.high {
+      background: #34a853;
+    }
+    .rating-dot.filled.mid {
+      background: #fbbc04;
+    }
+    .rating-dot.filled.low {
+      background: #ea4335;
+    }
+
+    /* Collapsible abstract */
+    .abstract-toggle {
+      margin-top: 4px;
+    }
+    .abstract-toggle summary {
+      font-size: 13px;
+      color: #4a90d9;
+      cursor: pointer;
+      user-select: none;
+    }
+    .abstract-toggle .abstract-text {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.6;
+      margin-top: 8px;
+      padding: 12px 14px;
+      background: #fafbfc;
+      border-radius: 8px;
+    }
+
+    /* Key metrics card */
+    .metrics-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+    .metrics-card h3 {
+      margin: 0 0 14px;
+      font-size: 14px;
+      color: #888;
+      font-weight: 600;
+    }
+    .metrics-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .metric-item {
+      flex: 1;
+      min-width: 140px;
+      background: #f8f9fb;
+      border-radius: 10px;
+      padding: 14px 18px;
+      text-align: center;
+    }
+    .metric-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1a73e8;
+      margin-bottom: 4px;
+    }
+    .metric-name {
+      font-size: 13px;
+      color: #555;
+      font-weight: 500;
+    }
+    .metric-context {
+      font-size: 11px;
+      color: #999;
+      margin-top: 2px;
+    }
+
+    /* Mermaid concept map card */
+    .mermaid-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+    .mermaid-card h3 {
+      margin: 0 0 14px;
+      font-size: 14px;
+      color: #888;
+      font-weight: 600;
+    }
+    .mermaid-card pre.mermaid {
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin: 0;
+      text-align: center;
+    }
+    .mermaid-card .mermaid-fallback {
+      font-size: 13px;
+      color: #999;
+      text-align: center;
+      padding: 20px;
+    }
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
     }
 
     /* Analysis content card */
@@ -209,6 +445,24 @@
       overflow-y: hidden;
     }
 
+    /* Related areas */
+    .related-areas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #f0f0f0;
+    }
+    .related-area {
+      display: inline-block;
+      background: #f0f4fa;
+      color: #666;
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 9999px;
+    }
+
     /* Footer */
     .footer {
       text-align: center;
@@ -217,47 +471,216 @@
       padding: 16px 0 32px;
     }
 
+    /* Mobile TOC toggle */
+    .toc-mobile-toggle {
+      display: none;
+      background: #ffffff;
+      border: 1px solid #e8e8e8;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+    .toc-mobile-toggle summary {
+      font-size: 14px;
+      font-weight: 600;
+      color: #555;
+      cursor: pointer;
+    }
+    .toc-mobile-toggle ul {
+      list-style: none;
+      margin: 10px 0 0;
+      padding: 0;
+    }
+    .toc-mobile-toggle li {
+      margin-bottom: 6px;
+    }
+    .toc-mobile-toggle a {
+      font-size: 13px;
+      color: #555;
+      display: block;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+    .toc-mobile-toggle a:hover {
+      background: #f0f4fa;
+      color: #4a90d9;
+      text-decoration: none;
+    }
+
     /* Responsive */
-    @media (max-width: 640px) {
-      .container { padding: 16px 12px 32px; }
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .toc-mobile-toggle { display: block; }
+      .page-layout {
+        flex-direction: column;
+        padding: 16px 12px 32px;
+      }
+      .content-area { max-width: 100%; }
       .meta-card { padding: 20px 18px; }
       .meta-card h1 { font-size: 18px; }
       .analysis-card { padding: 20px 18px; }
       .navbar { padding: 10px 14px; }
+      .ratings-row { gap: 12px; }
+      .metrics-row { flex-direction: column; }
     }
   </style>
 </head>
 <body>
   <!-- Top navigation -->
   <nav class="navbar">
-    <a href="index.html">← 返回当日总览</a>
-    <span class="nav-date">{{ date }}</span>
+    <div class="nav-left">
+      <a href="index.html">← 返回总览</a>
+      {% if prev_paper %}
+      <a class="nav-prev" href="{{ prev_paper.arxiv_id }}.html" title="{{ prev_paper.title }}">‹ 上一篇</a>
+      {% else %}
+      <span class="nav-prev nav-disabled">‹ 上一篇</span>
+      {% endif %}
+    </div>
+    <span class="nav-center">{{ date }}</span>
+    <div class="nav-right">
+      {% if next_paper %}
+      <a class="nav-next" href="{{ next_paper.arxiv_id }}.html" title="{{ next_paper.title }}">下一篇 ›</a>
+      {% else %}
+      <span class="nav-next nav-disabled">下一篇 ›</span>
+      {% endif %}
+    </div>
   </nav>
 
-  <div class="container">
-    <!-- Paper metadata card -->
-    <div class="meta-card">
-      <h1>{{ paper.title }}</h1>
-      {% if paper.authors %}
-      <div class="meta-authors">{{ paper.authors | join(", ") }}</div>
-      {% endif %}
-      <div class="meta-links">
-        <span class="badge-upvotes">👍 {{ paper.upvotes }}</span>
-        <a href="{{ paper.hf_url }}" target="_blank">🤗 HuggingFace</a>
-        <a href="{{ paper.arxiv_url }}" target="_blank">📄 arXiv</a>
-        <a href="{{ paper.pdf_url }}" target="_blank">📥 PDF</a>
+  <div class="page-layout">
+    <!-- Desktop TOC sidebar -->
+    <aside class="sidebar">
+      <div class="toc-sticky">
+        <div class="toc-card">
+          <h3>目录</h3>
+          <ul id="toc-list">
+            {% for item in toc %}
+            <li><a href="#{{ item.id }}">{{ item.text }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
       </div>
-    </div>
+    </aside>
 
-    <!-- Vibe Reading analysis -->
-    <div class="analysis-card">
-      {{ analysis_html | safe }}
-    </div>
+    <!-- Main content -->
+    <main class="content-area">
+      <!-- Mobile TOC -->
+      <details class="toc-mobile-toggle">
+        <summary>📖 目录导航</summary>
+        <ul>
+          {% for item in toc %}
+          <li><a href="#{{ item.id }}">{{ item.text }}</a></li>
+          {% endfor %}
+        </ul>
+      </details>
 
-    <!-- Footer -->
-    <div class="footer">
-      由 <a href="https://huggingface.co/papers" target="_blank">HF Daily Papers Vibe Reading</a> 自动生成 · {{ generated_at }}
-    </div>
+      <!-- Paper metadata card -->
+      <div class="meta-card">
+        <h1>{{ paper.title }}</h1>
+        {% if paper.metadata and paper.metadata.one_line_summary %}
+        <div class="one-line-summary">{{ paper.metadata.one_line_summary }}</div>
+        {% endif %}
+        {% if paper.authors %}
+        <div class="meta-authors">{{ paper.authors | join(", ") }}</div>
+        {% endif %}
+        <div class="meta-links">
+          <span class="badge-upvotes">👍 {{ paper.upvotes }}</span>
+          <a href="{{ paper.hf_url }}" target="_blank">🤗 HuggingFace</a>
+          <a href="{{ paper.arxiv_url }}" target="_blank">📄 arXiv</a>
+          <a href="{{ paper.pdf_url }}" target="_blank">📥 PDF</a>
+        </div>
+
+        {% if paper.metadata and paper.metadata.tags %}
+        <div class="tag-pills">
+          {% for tag in paper.metadata.tags %}
+          <span class="tag-pill">{{ tag }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if paper.metadata %}
+        <div class="ratings-row">
+          <div class="rating-item">
+            <span class="rating-label">难度</span>
+            <div class="rating-bar">
+              {% for i in range(1, 6) %}
+              <span class="rating-dot {% if i <= paper.metadata.difficulty %}filled {% if paper.metadata.difficulty >= 4 %}high{% elif paper.metadata.difficulty >= 2 %}mid{% else %}low{% endif %}{% endif %}"></span>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="rating-item">
+            <span class="rating-label">创新性</span>
+            <div class="rating-bar">
+              {% for i in range(1, 6) %}
+              <span class="rating-dot {% if i <= paper.metadata.novelty %}filled {% if paper.metadata.novelty >= 4 %}high{% elif paper.metadata.novelty >= 2 %}mid{% else %}low{% endif %}{% endif %}"></span>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="rating-item">
+            <span class="rating-label">实用性</span>
+            <div class="rating-bar">
+              {% for i in range(1, 6) %}
+              <span class="rating-dot {% if i <= paper.metadata.practicality %}filled {% if paper.metadata.practicality >= 4 %}high{% elif paper.metadata.practicality >= 2 %}mid{% else %}low{% endif %}{% endif %}"></span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+        <details class="abstract-toggle">
+          <summary>展开原文摘要</summary>
+          <div class="abstract-text">{{ paper.summary }}</div>
+        </details>
+      </div>
+
+      <!-- Key metrics card -->
+      {% if paper.metadata and paper.metadata.key_metrics %}
+      <div class="metrics-card">
+        <h3>📊 关键指标</h3>
+        <div class="metrics-row">
+          {% for metric in paper.metadata.key_metrics %}
+          <div class="metric-item">
+            <div class="metric-value">{{ metric.value }}</div>
+            <div class="metric-name">{{ metric.name }}</div>
+            {% if metric.context %}
+            <div class="metric-context">{{ metric.context }}</div>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Mermaid concept map -->
+      {% if paper.metadata and paper.metadata.mermaid_concept_map %}
+      <div class="mermaid-card">
+        <h3>🗺️ 概念图</h3>
+        <pre class="mermaid">{{ paper.metadata.mermaid_concept_map }}</pre>
+      </div>
+      {% endif %}
+
+      <!-- Vibe Reading analysis -->
+      <div class="analysis-card">
+        {{ analysis_html | safe }}
+      </div>
+
+      <!-- Related areas -->
+      {% if paper.metadata and paper.metadata.related_areas %}
+      <div class="analysis-card" style="padding: 20px 28px;">
+        <h3 style="margin: 0 0 12px; font-size: 14px; color: #888;">🔗 相关领域</h3>
+        <div class="related-areas" style="border: none; padding: 0; margin: 0;">
+          {% for area in paper.metadata.related_areas %}
+          <span class="related-area">{{ area }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Footer -->
+      <div class="footer">
+        由 <a href="https://huggingface.co/papers" target="_blank">HF Daily Papers Vibe Reading</a> 自动生成 · {{ generated_at }}
+      </div>
+    </main>
   </div>
 
   <!-- KaTeX JS -->
@@ -276,5 +699,51 @@
             ],
             throwOnError: false
           });"></script>
+
+  <!-- Mermaid JS (ESM) -->
+  {% if paper.metadata and paper.metadata.mermaid_concept_map %}
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'neutral',
+      securityLevel: 'loose',
+      flowchart: { useMaxWidth: true, htmlLabels: true }
+    });
+    // Graceful degradation: if mermaid fails, show fallback
+    document.querySelectorAll('pre.mermaid').forEach(el => {
+      el.addEventListener('error', () => {
+        el.innerHTML = '<div class="mermaid-fallback">概念图渲染失败，请查看源文本</div>';
+      });
+    });
+  </script>
+  {% endif %}
+
+  <!-- TOC scroll spy -->
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const tocLinks = document.querySelectorAll('#toc-list a');
+    if (tocLinks.length === 0) return;
+
+    const headings = [];
+    tocLinks.forEach(link => {
+      const id = link.getAttribute('href').substring(1);
+      const heading = document.getElementById(id);
+      if (heading) headings.push({ el: heading, link: link });
+    });
+
+    function updateActive() {
+      let current = headings[0];
+      for (const h of headings) {
+        if (h.el.getBoundingClientRect().top <= 100) current = h;
+      }
+      tocLinks.forEach(l => l.classList.remove('active'));
+      if (current) current.link.classList.add('active');
+    }
+
+    window.addEventListener('scroll', updateActive, { passive: true });
+    updateActive();
+  });
+  </script>
 </body>
 </html>

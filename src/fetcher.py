@@ -5,11 +5,15 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
+from typing import TYPE_CHECKING
 
 import httpx
 import requests
 
 from . import config
+
+if TYPE_CHECKING:
+    from .metadata import PaperMetadata
 
 logger = logging.getLogger(__name__)
 
@@ -59,6 +63,7 @@ class Paper:
     # Populated later
     pdf_bytes: bytes | None = None
     analysis: str = ""
+    metadata: PaperMetadata | None = None
 
     def __post_init__(self) -> None:
         self.hf_url = self.hf_url or f"https://huggingface.co/papers/{self.arxiv_id}"

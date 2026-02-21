@@ -8,27 +8,32 @@
 
 ```
 src/
-├── main.py          # 异步 pipeline 入口：fetch → download → analyze → report → visualize → save
+├── main.py          # 异步 pipeline 入口：fetch → download → analyze → extract metadata → report → visualize → save
 ├── config.py        # 环境变量配置（Gemini / SMTP / 代理 / 输出）
 ├── fetcher.py       # HuggingFace Daily Papers API + Paper 数据类定义
 ├── paper_reader.py  # arXiv PDF 下载（带本地缓存 + 重试 + 并发控制）
-├── analyzer.py      # Gemini Vibe Reading 分析（PDF 内嵌 + JSON 日志）
+├── analyzer.py      # Gemini Vibe Reading 分析（PDF 内嵌 + JSON 日志 + 元数据 prompt）
+├── metadata.py      # PaperMetadata 数据类 + json:metadata 块解析
 ├── reporter.py      # Markdown 报告 + HTML 邮件生成
-├── visualizer.py    # 单篇论文 HTML 页面 + 当日总览页生成
+├── visualizer.py    # 单篇论文 HTML 页面 + 当日总览页 + 跨天汇总页生成
 └── notifier.py      # SMTP 邮件发送（当前已注释掉）
 
 templates/
 ├── email_template.html  # 邮件模板（700px 宽，内联 CSS）
-├── paper.html           # 单篇论文页（900px 宽，KaTeX 公式渲染）
-└── index.html           # 当日总览页（可点击卡片跳转）
+├── paper.html           # 单篇论文页（双栏布局：TOC 侧边栏 + 内容区，Mermaid 概念图，KaTeX 公式）
+├── index.html           # 当日总览页（Chart.js 统计面板 + 标签筛选 + 增强卡片）
+└── summary.html         # 跨天汇总仪表盘（ECharts 趋势图/雷达图/主题频次 + 日期浏览器）
 
 output/
 ├── YYYY-MM-DD.md                   # 每日 Markdown 报告
 ├── papers/YYYY-MM-DD/*.pdf         # PDF 缓存
 ├── gemini_logs/YYYY-MM-DD/*.json   # Gemini API 请求/响应/错误日志
-└── html/YYYY-MM-DD/                # 可视化网页
-    ├── index.html
-    └── {arxiv_id}.html
+└── html/
+    ├── papers_index.json           # 跨天论文元数据索引（自动追加）
+    ├── summary.html                # 跨天汇总仪表盘
+    └── YYYY-MM-DD/                 # 可视化网页
+        ├── index.html
+        └── {arxiv_id}.html
 ```
 
 ## 核心数据类
@@ -47,9 +52,26 @@ class Paper:
     hf_url / arxiv_url / pdf_url: str  # __post_init__ 自动生成
     pdf_bytes: bytes | None            # download 阶段填充
     analysis: str                      # analyze 阶段填充
+    metadata: PaperMetadata | None     # metadata 提取阶段填充
 ```
 
-修改 Paper 字段时注意：模板（3 个 HTML）、reporter、visualizer 都依赖这些属性名。
+`PaperMetadata`（定义在 `src/metadata.py`）存储 Gemini 返回的结构化元数据：
+
+```python
+@dataclass
+class PaperMetadata:
+    one_line_summary: str        # 一句话总结
+    tags: list[str]              # 关键词标签（英文）
+    difficulty: int              # 阅读难度 1-5
+    novelty: int                 # 创新性 1-5
+    practicality: int            # 实用性 1-5
+    topics: list[str]            # 具体研究主题
+    key_metrics: list[dict]      # 关键实验指标 [{name, value, context}]
+    mermaid_concept_map: str     # Mermaid.js 概念图/流程图语法
+    related_areas: list[str]     # 相关研究领域
+```
+
+修改 Paper/PaperMetadata 字段时注意：模板（4 个 HTML）、reporter、visualizer 都依赖这些属性名。
 
 ## 开发约定
 
@@ -98,6 +120,24 @@ class Paper:
 - 支持分隔符：`$$...$$`（display）、`$...$`（inline）、`\\(...\\)` / `\\[...\\]`
 - `throwOnError: false` 容错处理
 
+### Mermaid.js 概念图（仅 paper.html）
+- CDN 引入：`mermaid@11`（ESM 模式）
+- 条件渲染：仅当 `paper.metadata.mermaid_concept_map` 存在时加载
+- `securityLevel: 'loose'` + `theme: 'neutral'`
+- 渲染失败时优雅降级
+
+### Chart.js 统计图表（仅 index.html）
+- CDN 引入：`chart.js@4`（~60KB gzip）
+- 主题分布饼图 + 平均评分柱状图
+- 条件渲染：仅当 `stats.topic_counts` 存在时加载
+
+### ECharts 仪表盘（仅 summary.html）
+- CDN 引入：`echarts@5`（~300KB gzip）
+- 折线/柱状复合图：每日论文数 & 平均 upvotes 趋势
+- 横向柱状图：主题出现频次
+- 雷达图：综合 difficulty/novelty/practicality 评分
+- 响应式 resize
+
 ### visualizer.py 中的 Markdown 转 HTML
 - 使用 `markdown` 库，启用扩展：`tables`、`fenced_code`、`codehilite`、`toc`、`nl2br`
 - Jinja2 `autoescape=False`（有意为之，因为 HTML 由 markdown 库生成而非用户输入）
@@ -125,19 +165,25 @@ uv lock
 ## 当前进度（2025-02-08）
 
 ### 已完成
-- 完整 pipeline：fetch → download PDF → Gemini 分析 → Markdown/HTML 报告 → 可视化网页
+- 完整 pipeline：fetch → download PDF → Gemini 分析 → 元数据提取 → Markdown/HTML 报告 → 可视化网页
+- **可视化系统全面改版**：
+  - `src/metadata.py`：`PaperMetadata` 数据类 + `extract_metadata()` 从 Gemini 输出解析 `json:metadata` 块
+  - `src/analyzer.py`：Gemini prompt 追加元数据输出指令（标签、评分、Mermaid 图、关键指标等）
+  - `templates/paper.html`：双栏布局（TOC 侧边栏 + 内容区）、Mermaid 概念图、评分条、关键指标卡、prev/next 导航、移动端折叠 TOC
+  - `templates/index.html`：Chart.js 统计面板（主题饼图 + 评分柱状图）、标签筛选/排序、增强卡片（one_line_summary + tags + mini 评分条 + key_metric）、日期导航
+  - `templates/summary.html`：ECharts 跨天仪表盘（趋势图、主题频次、雷达图）、热门主题标签云、日期浏览器
+  - `src/visualizer.py`：TOC 提取、prev/next 论文引用、统计计算、相邻日期检测、`papers_index.json` 持久化、`generate_summary_page()` 生成跨天汇总
 - 可视化系统：`src/visualizer.py` + `templates/paper.html` + `templates/index.html`（KaTeX 公式渲染）
 - 项目管理迁移到 uv（删除 requirements.txt，依赖统一在 pyproject.toml）
 - GitHub Actions CI 使用 uv（`astral-sh/setup-uv@v5`）
 - 仓库已推送：https://github.com/ottolu/papers-vibe-reading
 
 ### 待修复的 Bug
-- **`src/analyzer.py` 第 205 行 prompt 覆盖 bug**：第 200-203 行构建了含论文标题和摘要的 `user_text`，但第 205 行 `user_text = VIBE_READING_PROMPT` 直接覆盖了前面的拼接，导致标题/摘要信息丢失。应删除第 205 行。
+- ~~**`src/analyzer.py` 第 205 行 prompt 覆盖 bug**~~：已通过改版修复
 
 ### 待做 / 可优化
 - 邮件发送功能待启用（`src/main.py` 中用三引号注释掉了）
 - 并发上限 Semaphore(3) 硬编码，可考虑移到 config
-- 可视化页面暂无"上一篇/下一篇"导航
 
 ## 已知问题 / 注意事项
 

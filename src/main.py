@@ -22,8 +22,9 @@ if _PROJECT_ROOT not in sys.path:
 from src.fetcher import fetch_daily_papers
 from src.paper_reader import download_papers_pdf
 from src.analyzer import analyze_papers
+from src.metadata import extract_metadata
 from src.reporter import generate_markdown, generate_html, save_report
-from src.visualizer import generate_paper_pages
+from src.visualizer import generate_paper_pages, generate_summary_page
 from src.notifier import send_email
 from src import config
 
@@ -85,20 +86,31 @@ async def run() -> None:
         paper.pdf_bytes = pdf_map.get(paper.arxiv_id)
 
     # 3. AI Vibe Reading ---------------------------------------------------
-    logger.info("Step 3/5: Running Gemini Vibe Reading …")
+    logger.info("Step 3/6: Running Gemini Vibe Reading …")
     analyses = await analyze_papers(papers, target_date=target)
     for paper, analysis in zip(papers, analyses):
         paper.analysis = analysis
 
+    # 3.5. Extract metadata from analysis ----------------------------------
+    logger.info("Step 3.5/6: Extracting metadata from analyses …")
+    for paper in papers:
+        cleaned, meta = extract_metadata(paper.analysis)
+        paper.analysis = cleaned
+        paper.metadata = meta
+
     # 4. Generate report ---------------------------------------------------
-    logger.info("Step 4/5: Generating report …")
+    logger.info("Step 4/6: Generating report …")
     markdown = generate_markdown(papers, target_date=target)
     html = generate_html(papers, target_date=target)
 
     # 4.5 Generate per-paper HTML visualization ----------------------------
-    logger.info("Step 4.5/5: Generating per-paper HTML pages …")
+    logger.info("Step 4.5/6: Generating per-paper HTML pages …")
     html_dir = generate_paper_pages(papers, target_date=target)
     logger.info("HTML visualization pages → %s", html_dir)
+
+    # 4.6 Generate cross-day summary page ----------------------------------
+    logger.info("Step 4.6/6: Generating cross-day summary page …")
+    generate_summary_page(papers, target_date=target)
 
     # 5. Save archive ------------------------------------------------------
     report_path = save_report(markdown, target_date=target)
