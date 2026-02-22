@@ -10,7 +10,7 @@ load_dotenv()
 
 # --- AI Configuration (Gemini) ---
 GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
-GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-3-pro-preview")
+GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-3.1-pro-preview")
 
 # --- Paper Configuration ---
 PAPERS_TOP_N: int = int(os.getenv("PAPERS_TOP_N", "5"))
