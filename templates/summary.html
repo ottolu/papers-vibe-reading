@@ -332,8 +332,9 @@
     </div>
   </div>
 
-  <!-- ECharts CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <!-- ECharts (local + CDN fallback) -->
+  <script src="assets/echarts.min.js"
+          onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js';"></script>
   <script>
     const dailyStats = {{ daily_stats_json | safe }};
     const topTopics = {{ top_topics_json | safe }};

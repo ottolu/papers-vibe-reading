@@ -461,9 +461,10 @@
     </div>
   </div>
 
-  <!-- Chart.js CDN -->
+  <!-- Chart.js (local + CDN fallback) -->
   {% if stats and stats.topic_counts %}
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+  <script src="../assets/chart.umd.min.js"
+          onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js';"></script>
   <script>
     // Topic distribution pie chart
     const topicLabels = {{ topic_labels_json | safe }};

@@ -323,6 +323,9 @@ def generate_paper_pages(
     out_dir = Path(config.OUTPUT_DIR) / "html" / date_str
     out_dir.mkdir(parents=True, exist_ok=True)
 
+    # Ensure assets directory exists (may already be populated by ensure_assets())
+    (out_dir.parent / "assets").mkdir(parents=True, exist_ok=True)
+
     generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     paper_template = _jinja_env.get_template("paper.html")

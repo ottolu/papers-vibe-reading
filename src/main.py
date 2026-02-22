@@ -19,6 +19,7 @@ _PROJECT_ROOT = str(Path(__file__).resolve().parent.parent)
 if _PROJECT_ROOT not in sys.path:
     sys.path.insert(0, _PROJECT_ROOT)
 
+from src.assets import ensure_assets
 from src.fetcher import fetch_daily_papers
 from src.paper_reader import download_papers_pdf
 from src.analyzer import analyze_papers
@@ -103,13 +104,17 @@ async def run() -> None:
     markdown = generate_markdown(papers, target_date=target)
     html = generate_html(papers, target_date=target)
 
-    # 4.5 Generate per-paper HTML visualization ----------------------------
-    logger.info("Step 4.5/6: Generating per-paper HTML pages …")
+    # 4.5 Download front-end assets for offline viewing ---------------------
+    logger.info("Step 4.5/6: Downloading front-end assets …")
+    await ensure_assets()
+
+    # 4.6 Generate per-paper HTML visualization ----------------------------
+    logger.info("Step 4.6/6: Generating per-paper HTML pages …")
     html_dir = generate_paper_pages(papers, target_date=target)
     logger.info("HTML visualization pages → %s", html_dir)
 
-    # 4.6 Generate cross-day summary page ----------------------------------
-    logger.info("Step 4.6/6: Generating cross-day summary page …")
+    # 4.7 Generate cross-day summary page ----------------------------------
+    logger.info("Step 4.7/6: Generating cross-day summary page …")
     generate_summary_page(papers, target_date=target)
 
     # 5. Save archive ------------------------------------------------------
